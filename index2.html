@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="shortcut icon" href="icon.png">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Алгоритм "A-STAR".</title>
+  <h1 align = "center"><font size = 10>Алгоритм "A-STAR".</font></h1>
+
+
+</head>
+<body>
+
+<p><a href="index.html"><button type="button" class="button">Вернуться на главную</button></a>
+  <a href="index3.html"><button type="button" class="button">Алгоритм кластерезации</button></a>
+  <a href="index4.html"><button type="button" class="button">Генетический алгоритм</button></a>
+  <a href="index5.html"><button type="button" class="button">Муравьиный алгоритм</button></a>
+  <a href="index6.html"><button type="button" class="button">Дерево решений</button></a>
+  <a href="index7.html"><button type="button" class="button">Нейронная сеть</button></a></p>
+<br>
+<br>
+<br>
+
+<label for="input">Введите число:</label>
+<input id="input" type="number" min="1" max="30">
+<button onclick="create_table()" class="button">Создать таблицу</button>
+<div id="table"></div>
+
+<script>
+  function create_table() {
+    const n = document.getElementById("input").value;
+    const table = document.getElementById("table");
+    table.innerHTML = "";
+    for (let i = 0; i < n; i++) {
+      const row = document.createElement("div");
+      for (let j = 0; j < n; j++) {
+        const square = document.createElement("div");
+        square.classList.add("square");
+        square.id = i + "-" + j;
+        row.appendChild(square);
+
+      }
+      table.appendChild(row);
+    }
+  }
+</script>
+
+</body>
+</html>

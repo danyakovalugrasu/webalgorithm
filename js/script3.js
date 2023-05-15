@@ -69,6 +69,8 @@ function getRandomInt(max) {
 
 document.addEventListener('click', function (start) { //старт алгоритма
   if (start.target.id == "start_alg") {
+    document.getElementById("start_alg").disabled = true;
+
 
     k = document.getElementById("size").value;
 
@@ -93,7 +95,7 @@ document.addEventListener('click', function (start) { //старт алгори�
           clusters.push([]);
         }
 
-        var max_iters = 555;
+        var max_iters = 300;
         for (let iter = 0; iter < max_iters; iter++) {  // создадим k пустых кластеров
 
           for (let i = 0; i < matrix_point.length; i++) { // присвоим каждому центроиду ближайшую точку
@@ -125,6 +127,10 @@ document.addEventListener('click', function (start) { //старт алгори�
               }
             }
           }
+
+
+
+
 
         }
 
@@ -183,6 +189,133 @@ document.addEventListener('click', function (start) { //старт алгори�
     else {
       alert("Количество точек должно быть больше или равно количеству кластеров.")
     }
+    document.getElementById("start_alg").disabled = false;
+  }
+});
+
+document.addEventListener('click', function (start) { //старт алгоритма
+  if (start.target.id == "start_alg") {
+    document.getElementById("start_alg").disabled = true;
+
+
+    k = document.getElementById("size").value;
+
+    if (k <= count_point) {
+
+      while (count != k) {
+        count = 0;
+        centroids.length = 0;
+        clusters.length = 0;
+        sum.length = 0;
+
+
+        for (let i = 0; i < k; i++) {
+          // var point_x = getRandomInt(501);
+          // var point_y = getRandomInt(501);
+
+          centroids.push([getRandomInt(max_x), getRandomInt(max_y)]);
+
+        }
+
+        for (let j = 0; j < k; j++) {
+          clusters.push([]);
+        }
+
+        var max_iters = 300;
+        for (let iter = 0; iter < max_iters; iter++) {  // создадим k пустых кластеров
+
+          for (let i = 0; i < matrix_point.length; i++) { // присвоим каждому центроиду ближайшую точку
+            min_dist = 3000;
+            cluster_point = 0;
+            for (let j = 0; j < k; j++) {
+              var dist = distance(matrix_point[i], centroids[j]);
+              if (dist < min_dist) {
+                min_dist = dist;
+                cluster_point = j;
+              }
+            }
+            clusters[cluster_point].push(matrix_point[i]);
+          }
+
+
+
+
+          for (let j = 0; j < k; j++) { // вторая итерация алгоритма
+            if (clusters[j].length > 0) {
+              sum = new Array(clusters[j][0].length).fill(0.0);
+              for (let i = 0; i < clusters[j].length; i++) {
+                for (let d = 0; d < clusters[j][i].length; d++) {
+                  sum[d] += clusters[j][i][d];
+                }
+              }
+              for (let d = 0; d < sum.length; d++) {
+                centroids[j][d] = sum[d] / clusters[j].length;
+              }
+            }
+          }
+
+
+
+
+
+        }
+
+        clusters.length = 0;
+        for (let j = 0; j < k; j++) {
+          clusters.push([]);
+        }
+
+        for (let v = 0; v < matrix_point.length; v++) { // присвоим каждому центроиду ближайшую точку
+          min_dist = 3000;
+          cluster_point = 0;
+          for (let c = 0; c < k; c++) {
+            var dist = distance(matrix_point[v], centroids[c]);
+            if (dist < min_dist) {
+              min_dist = dist;
+              cluster_point = c;
+            }
+          }
+          clusters[cluster_point].push(matrix_point[v]);
+        }
+
+        for (let i = 0; i < k; i++)
+        {
+          if (clusters[i].length > 0)
+          {
+            count = count + 1;
+          }
+        }
+
+      }
+      function get_rand_color()
+      {
+        var color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
+        while(color.length < 6) {
+          color = "0" + color;
+        }
+        return "#" + color;
+      }
+
+      for (let j = 0; j < k; j++) {
+        x = centroids[j][0];
+        y = centroids[j][1];
+        colors_print = get_rand_color();
+        ctx.fillStyle = "black";
+        ctx.fillRect(x, y, 12, 12);
+        for (let i = 0; i < clusters[j].length; i++) {
+          x = clusters[j][i][0];
+          y = clusters[j][i][1];
+          ctx.fillStyle = colors_print;
+          ctx.fillRect(x, y, 10, 10);
+        }
+      }
+
+    }
+
+    else {
+      alert("Количество точек должно быть больше или равно количеству кластеров.")
+    }
+    document.getElementById("start_alg").disabled = false;
   }
 });
 
